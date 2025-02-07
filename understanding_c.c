@@ -2,19 +2,23 @@
 
 int main(){
 
-    const double pi = 3.14159;
-    double radius;
-    double circumference;
-    double area;
+    int age;
 
-    printf("\nEnter radius of the circle: ");
-    scanf("%lf", &radius);
-    
-    circumference = 2 * pi * radius;
-    area = pi * radius * radius;
-    
-    printf("\ncircumference = %lf", circumference);
-    printf("\narea = %lf", area);
+    printf("\nEnter your age: ");
+    scanf("%d", &age);
+
+    if(age >= 18){
+        printf("You are now signed up!");     
+    }
+    else if(age == 0){
+        printf("You can't sign up! You were just born!");
+    }
+    else if(age < 0){
+        printf("You haven't been born yet!");
+    }
+    else{
+        printf("You are too young to sign up!");               
+    }
 
     return (0);
 }
