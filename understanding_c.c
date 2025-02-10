@@ -1,42 +1,17 @@
 #include <stdio.h>
 
-int main(){    
-       
-    char operator;
-    double num1;
-    double num2;
-    double result;
+void birthday(char x[], int y)
+{
+    printf("\nHappy birtday dear %s!", x);
+    printf("\nYou are %d years old!", y );    
+}
 
-    printf("\nEnter the operator(+ - * /): ");
-    scanf("%c", &operator); 
+int main()
+{   
+    char name [] = "Bro";
+    int age = 21;
 
-    printf("\nEnter number 1: ");
-    scanf("%lf", &num1);
-
-    printf("\nEnter number 2: ");
-    scanf("%lf", &num2);
-
-    switch(operator){
-        case '+':
-            result = num1 + num2;
-            printf("\nresult: %.2lf", result);
-            break;
-        case '-':
-            result = num1 - num2;
-            printf("%.2lf", result);
-            break;
-        case '*':
-            result = num1 * num2;
-            printf("%.2lf", result);
-            break;
-        case '/':
-            result = num1 / num2;
-            printf("%.2lf", result);
-            break;
-
-        default:
-            printf("%c is not valid", operator);
-    }
-   
-    return (0);
+    birthday(name, age);      
+    
+    return 0;    
 }
