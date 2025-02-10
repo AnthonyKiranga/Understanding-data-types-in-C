@@ -1,24 +1,42 @@
 #include <stdio.h>
 
-int main(){
+int main(){    
+       
+    char operator;
+    double num1;
+    double num2;
+    double result;
 
-    int age;
+    printf("\nEnter the operator(+ - * /): ");
+    scanf("%c", &operator); 
 
-    printf("\nEnter your age: ");
-    scanf("%d", &age);
+    printf("\nEnter number 1: ");
+    scanf("%lf", &num1);
 
-    if(age >= 18){
-        printf("You are now signed up!");     
-    }
-    else if(age == 0){
-        printf("You can't sign up! You were just born!");
-    }
-    else if(age < 0){
-        printf("You haven't been born yet!");
-    }
-    else{
-        printf("You are too young to sign up!");               
-    }
+    printf("\nEnter number 2: ");
+    scanf("%lf", &num2);
 
+    switch(operator){
+        case '+':
+            result = num1 + num2;
+            printf("\nresult: %.2lf", result);
+            break;
+        case '-':
+            result = num1 - num2;
+            printf("%.2lf", result);
+            break;
+        case '*':
+            result = num1 * num2;
+            printf("%.2lf", result);
+            break;
+        case '/':
+            result = num1 / num2;
+            printf("%.2lf", result);
+            break;
+
+        default:
+            printf("%c is not valid", operator);
+    }
+   
     return (0);
 }
