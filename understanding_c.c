@@ -1,53 +1,187 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
+
+char board[3][3];
+const char PLAYER = 'X';
+const char COMPUTER = 'O';
+
+void resetBoard();
+void printBoard();
+int checkFreeSpaces();
+void playerMove();
+void computerMove();
+char checkWinner();
+void printWinner(char);
 
 int main()
-{
-    char questions[][100] = {"1. What year did the C langiage debut?: ",
-                             "2. Who is credited with creating C?",
-                             "3. What is the predecessor of C?: "};
-    
-    char options[][100] = {"A. 1969", "B. 1972", "C. 1975", "D. 1999",
-                           "A. Dennis Ritchie", "B. Nikola Tesla", "C. John Carmack", "D. Doc Brown",
-                           "A. Objective C", "B. B", "C. C++", "D. C#"};
-    
-    char answers[3] = {'B', 'A', 'B'};
-    int numberOfQuestions = sizeof(questions)/sizeof(questions[0]);
+{ 
+  char winner = ' ';
+  char response;
 
-    char guess;
-    int score = 0;
+  do
+  {
+    winner = ' ';
+    response = ' ';
+    resetBoard();
 
-    printf("QUIZ GAME\n");
-
-    for(int i = 0; i < numberOfQuestions; i++)
+    while(winner == ' ' && checkFreeSpaces() != 0)
     {
-        printf("*********************\n");
-        printf("%s\n", questions[i]);
-        printf("*********************\n");
+      printBoard();
+  
+      playerMove();
+      winner = checkWinner();
+      if(winner != ' ' || checkFreeSpaces() == 0)
+      {
+        break;
+      }
+  
+      computerMove();
+      winner = checkWinner();
+      if(winner != ' ' || checkFreeSpaces() == 0)
+      {
+        break;
+      }
+    } 
+     
+    printBoard();
+    printWinner(winner);
+    
+   printf("\nWould you like to play again? (Y/N): ");
+    scanf(" %c", &response);
+   response = toupper(response); 
+  }while(response == 'Y');
 
-        for(int j = (i * 4); j < (i * 4) + 4; j++)
-        {
-            printf("%s\n", options[j]);
-        }
+  printf("Thanks for playing");
 
-        printf("guess: ");
-        scanf(" %c", &guess);//clear \n from input buffer
-        
-        
-        guess = toupper(guess);
-
-        if(guess == answers[i])
-        {
-            printf("CORRECT!\n");
-            score++;
-        }
-        else
-        {
-            printf("WRONG!\n");           
-        }
-    }
-    printf("*********************\n");
-    printf("FINAL SCORE: %d/%d", score, numberOfQuestions);
-    printf("*********************\n");
     return 0;    
+}
+
+void resetBoard()
+{
+  for(int i = 0; i < 3; i++)
+  {
+    for(int j = 0; j < 3; j++)
+    {
+      board[i][j] = ' ';
+    }
+  }
+}
+void printBoard()
+{
+  printf(" %c | %c | %c ", board[0][0], board[0][1], board[0][2]);
+  printf("\n---|---|---|\n");
+  printf(" %c | %c | %c ", board[1][0], board[1][1], board[1][2]);
+  printf("\n---|---|---|\n");
+  printf(" %c | %c | %c ", board[2][0], board[2][1], board[2][2]);
+  printf("\n");
+}
+int checkFreeSpaces()
+{ 
+  int freeSpaces = 9;
+
+  for(int i = 0; i < 3; i++)
+  {
+    for(int j = 0; j < 3; j++)
+    {
+      if(board[i][j] != ' ')
+      {
+        freeSpaces--;
+      }
+    }
+  }
+  return freeSpaces;
+}
+void playerMove()
+{
+  int x;
+  int y;
+
+do
+{
+  printf("Enter row #(1-3): ");
+  scanf("%d", &x);
+  x--;
+  printf("Enter column #(1-3): ");
+  scanf("%d", &y);
+  y--;
+
+  if(board[x][y] != ' ')
+  {
+    printf("Invalid move");
+  }
+  else
+  {
+    board[x][y] = PLAYER;
+    break;
+  }
+} while (board[x][y] != ' ');
+
+}
+void computerMove()
+{
+  //creates a seed based on current time
+ srand(time(0));
+ int x;
+ int y;
+
+ if(checkFreeSpaces() > 0)
+ {
+    do
+    {
+      x = rand() % 3;
+      y = rand() % 3;
+    } while(board[x][y] != ' ');
+
+    board[x][y] = COMPUTER;
+ }
+ else
+ {
+  printWinner(' ');
+ }
+}
+char checkWinner()
+{
+  //check rows
+  for(int i = 0; i < 3; i++)
+  {
+    if(board[i][0] == board[i][1] && board[i][0] == board[i][2])
+    {
+      return board[i][0];
+    }
+  }
+  //check columns
+  for(int i = 0; i < 3; i++)
+  {
+    if(board[0][i] == board[1][i] && board[0][i] == board[2][i])
+    {
+      return board[0][1];
+    } 
+  }
+  //check diagnals
+  if(board[0][0] == board[1][1] && board[0][0] == board[2][2])
+  {
+    return board[0][0];
+  } 
+  if(board[0][2] == board[1][1] && board[0][2] == board[2][0 ])
+  {
+    return board[0][2];
+  } 
+
+  return ' ';
+}
+void printWinner(char winner)
+{
+  if(winner == PLAYER)
+  {
+    printf("YOU WIN!");
+  }
+  else if(winner == COMPUTER)
+  {
+    printf("YOU LOSE !");
+  }
+  else{
+    printf("IT'S A TIE!");
+  }
 }
